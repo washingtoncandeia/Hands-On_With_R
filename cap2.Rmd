@@ -1,0 +1,117 @@
+---
+title: "cap2 - Packages and Help Packages"
+author: "Washington Candeia de Araujo"
+date: "April 25, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Agora você tem uma função que simula rolar um par de dados. Vamos deixar as coisas um pouco mais interessantes por manipular os dados a seu favor. A casa sempre ganha, não é? Vamos fazer os dados mostrarem números mais altos com um pouco mais de frequência do que os números pequenos.  
+
+Antes de manipular os dados, devemos nos certificar de que eles estão prontos para iniciar. Duas ferramentas o ajudarão com isso: **_repetition_** e **_visualization_**. Por coincidência, estas ferramentas são também dois dos superpoderes mais usados no mundo da ciência de dados.  
+
+Nós repetiremos nosso lançamento de dados com uma função chamada `replicate`, e nós visualizaremos nossos lançamentos com uma função chamada `qplot`. Esta última não vem com o R quando você o baixa; `qplot` vem em um pacote R. Muitas das ferramentas mais úteis de R vem nesses pacotes, então vamos tomar um tempo para ver o que são os pacotes R e como você pode usá-los.  
+
+
+## Packages
+
+_Let's make it for a spin_ (vamos dar uma volta com `qplot`).  
+Em primeiro lugar, `qplot` significa _quick plots_. Por exemplo, se fornecermos para esta função dois vetores de igual comprimento, ela fornecerá um **_scatterplot_**, ou seja, um gráfico de distribuição. O primeiro vetor será um conjunto de valores **x** e o segundo vetor um conjunto de valores **y**.  
+
+```{r}
+library('ggplot2')
+# Vetor 1
+x <- c(-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1)
+# Vetor 2
+y <- x^3
+
+# qplot
+qplot(x, y)
+```
+
+Vamos criar um histograma:  
+
+```{r}
+x <- c(1, 2, 2, 2, 3, 3)
+qplot(x, binwidth = 1)
+```
+
+```{r}
+
+```
+
+
+```{r}
+x2 <- c(1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4)
+qplot(x2, binwidth = 1)
+```
+
+
+**Criando a funçao para lançar os dois dados**  
+
+```{r}
+roll <- function(bones = 1:6){
+  dice <- sample(bones, size = 2, replace = T)
+  sum(dice)
+}
+```
+
+### Replicate prove uma forma de repetir um comando R multiplas vezes
+
+Podemos usar a função `rolls` várias vezes, somando lançamento a lançamento. Podemos inclusive utilizar a função `qplot` para obter histograma que nos mostre qual o valor de soma mais frequente. Porém, se precisássemos lançar 10000 vezes, ficaria muito cansativo. Desta forma, podemos lançar mão de outra função em R que poupará nosso tempo, e ela é `replicate`. Ela replicará quantas vezes desejarmos, uma determinada ação, como é o caso de lançar os dados utilizando a função `roll`.  
+
+> Primeiro argumento é o número de vezes que se quer repetir o comando
+
+
+```{r}
+# Exemplo: repetir três vezes a soma 1 + 1
+replicate(3, 1 + 1)
+
+# Repetir o uso de nossa função roll 10x
+replicate(10, roll())
+```
+Agora sim, poderemos averiguar se nossos dados são confiáveis:  
+
+```{r}
+rolls <- replicate(10000, roll())
+# Gerar um histograma para ver suas frequências
+qplot(rolls, binwidth = 1)
+```
+
+Ao que parece, sim. Pois as distribuições de frequências das nossas somas estão de acordo com padrão esperado. 
+
+Porém, se nós quiséssemos manipular nossos dados (literalmente), fazendo com que a frequência de uma determinada soma seja maior que outra, por exemplo 6 + 6. Isso aumentaria o valor da soma, movendo as maiores frequências para a direita deste histograma.  
+
+Para isso, basta fazer uma modificação no nosso uso da função `sample`. Adicionar um novo argumento, no parâmetro `prob`.  
+
+Se observarmos como é o valor esperado (justo) de probabilidade de lançamento de um dado, veremos que cada faca terá uma mesma probabilidade de 1/6. Veja a tabela: 
+
+Número | Probabilidade justa | Probabilidade Ajustada |  
+-------|---------------------|------------------------|  
+1      | 1/6                 |1/8                     |  
+2      | 1/6                 |1/8                     | 
+3      | 1/6                 |1/8                     | 
+4      | 1/6                 |1/8                     | 
+5      | 1/6                 |1/8                     | 
+6      | 1/6                 |3/8                     | 
+
+Note que o valor 6 (a face do dado) tem uma probabilidade aumentada para 3/8.  
+
+Para isso, um vetor com cada uma das probabilidades acima (coluna 3, **Probabilidade Ajustada**) deve ser inserido na nossa função `sample`, utilizando-o como um argumento para `prob`.   
+
+```{r}
+roll <- function(bones = 1:6){
+  dice <- sample(bones, size = 2, replace = TRUE, prob = c(1/8, 1/8, 1/8, 1/8, 1/8, 3/8))
+  sum(dice)
+}
+
+# Agora, utilizando a funçao replicate para lançar 10000x
+rolls <- replicate(10000, roll())
+qplot(rolls, binwidth = 1)
+```
+
+
+**Note como as frequências foram modificadas.**
