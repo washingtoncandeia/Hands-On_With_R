@@ -1,0 +1,299 @@
+---
+title: "cap.3 - R Objects"
+author: "Washington Candeia de Araujo"
+date: "April 26, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Iniciando no Projeto 2: Playing Cards
+Neste capítulo o R será usado para construir um baralho de 52 cartas. 
+
+## Atomic Vectors
+É o tipo mais simples de objeto em R. A maioria das estruturas em R são construídas a partir deste tipo de objeto.  
+Um **vetor atômico** é um simples vetor contendo dados.  
+
+Vetores armazenam dados de forma unidimensional, e cada vetor armazena um tipo  de dado.  
+
+> Tipos de dados básicos de vetores atômicos:   
+- _doubles_  
+- _integers_  
+- _characters_  
+- _logical_  
+- _complex_  
+- _raw_  
+
+Para fazer isso é  preciso ficar atento às características de cada tipo destes seis tipos de dados. 
+
+```{r}
+# Nosso dado é um vetor simples
+die <- c(1, 2, 3, 4, 5, 6)
+is.vector(die)
+
+# Um único valor também é um vetor 
+five <- 5
+is.vector(five)
+```
+
+R reconhecerá cada uma das convenções específicas para criação de cada tipo de dados. Por exemplo, se quisermos criar um vetor contendo **_integers_** ou **_characters_** precisamos especificar cada um destes tipos de dados:   
+
+```{r}
+# Criando um vetor de inteiros
+int <- c(1L, 5L)
+
+# Criando um vetor de caracteres
+text <- c("espadas", "copas")
+
+print(int)
+print(text)
+```
+
+Agora, iremos observar cada um dos tipos de dados para vetores atômicos.   
+
+## Doubles
+
+Vetores com este tipo de dado armazena números comuns. Os números podem ser positivos ou negativos, pequenos ou grandes, podendo ter dígitos decimais. No geral, R salva qualquer número que digitamos como um _double_.  
+
+É possível descobrir que tipo estamos usando através da função `typeof`. 
+
+```{r}
+typeof(die)
+```
+
+Algumas funções de R se referem a _double_ como **_numerics_**. 
+
+> _Double_ é um termo usado em Ciência da Computação para se referir ao número específico de _bytes_ que o computador usa para armazenar um número.  
+
+
+## Integers
+
+Vetores com este tipo de dado armazenam números que podem ser escritos sem um componente decimal. O próprio autor deste livro recomenda não usar este tipo, pois é possível usar _double_ para armazenar como um inteiro. 
+
+```{r}
+# Especificando inteiros em um vetor
+int2 <- c(-1L, -60L, 88L, 5L, 6L)
+
+print(int2)
+```
+
+
+R não salvará um número como um inteiro (_integer_) a não ser que especifiquemos. 
+
+> A diferença entre um _double_ e um _integer_ é como R salvará cada um deles na memória do computador.
+Inteiros são definidos mais precisamente na memória do computador do que _doubles_.  
+
+# Characters 
+
+Caracteres são bem fáceis de identificar. Eles precisam estar sob aspas e seu tipo é igualmente fácil de identificar.  
+
+```{r}
+# Characters
+text <- c("Hello", "World")
+
+print(text)
+typeof(text)
+```
+
+# Logical
+
+Lógicos estão conforme a lógica matemática, onde os **_booleanos_** são utilizados para estas manipulações.   
+
+> **and** - será TRUE se ambos forem TRUE  
+> **or** - será FALSE se ambos forem FALSE  
+
+
+
+Logical **AND**|**Resultado**|  
+---------------|-------------|    
+FALSE AND FALSE|FALSE        |   
+FALSE AND TRUE |FALSE        |  
+TRUE AND FALSE |FALSE        |   
+TRUE AND TRUE  |TRUE         |  
+
+
+Logical **OR** |**Resultado**|  
+---------------|-------------|    
+FALSE OR FALSE |FALSE        |   
+FALSE OR TRUE  |TRUE         |  
+TRUE OR FALSE  |TRUE         |   
+TRUE OR TRUE   |TRUE         |  
+
+## Atributes
+
+Um **atributo** é um pedaço de informação que você pode anexar a um **_atomic vector_** ou qualquer objeto R.  
+Um atributo seria semelhante aos metadados uma vez que não será visível nem aparecerá no resultado do código. Então, por que utilizar?  
+
+Na verdade, alguma funções R podem utilizar os atributos específicos, por isso sua importância. Dependendo do tipo de análise e dados que quisermos armazenar, isso terá sua importância.
+
+É possível observar se um objeto R possui atributos relacionados. Para isso utiliza-se o mesmo tipo de função usada anteriormente:  
+
+```{r}
+dados <- c(1, 2, 3, 4, 5, 6)
+print(dados)
+attributes(dados)
+```
+
+Como o resultado é `NULL` sabemos que não há nenhum tipo de atributo relacionado ao objeto **dados**.  
+
+
+Agora, iremos observar que tipos de atributos podemos relacionar a um objeto R.  
+
+Os principais atributosd de um vetor atômico são:  
+> Names, Dimensions (dim), Classes  
+
+### Names 
+
+Este é um atributo que pode ser passado a vetores atômicos. Para passar os nomes como atributos, basta passar o objeto R como um argumento à função `names`. Para observar se está tudo O.K. utilize a função `attributes`. 
+
+```{r}
+# Vamos atribuir a objetos R, nomes
+# Esse é o atributo name em R
+dados <- c(1, 2, 3, 4, 5, 6)
+names(dados) <- c('um', 'dois', 'tres', 'quatro', 'cinco', 'seis')
+
+# Observando os atributos
+attributes(dados)
+print(dados)
+
+# Somar
+dados + 1
+
+# Para encerrar atributos basta atribuir NULL a este objeto R
+names(dados) <- NULL
+attributes(dados)
+
+# Exemplo
+eu <- c('Biologo', '34', 'Bioquímica', 'UFRN')
+names(eu) <- c('Profissão', 'Idade', 'Área', 'Instituição')
+print(eu)
+```
+
+
+### Dim  
+
+É possível transformar um vetor atômico em um **_array_** _n_-dimensional atribuindo-lhe (**_attribute_**!) dimensões com a função `dim`. Essa função cria o atributo específico para dimensões em objetos R.  
+
+O interessante é que sepode fornecer mais de duas dimensões (neste caso, **linha**, **coluna** e **_slices_**).  
+Vamos observar alguns exemplos.  
+
+```{r}
+dim(die) <- c(2, 3)  # Duas linhas, Três colunas
+print(die)
+
+dim(die) <- c(3, 2)
+print(die)
+
+# Criando um dado de três dimensões
+# Seria um hypercube, e R mostrará cada um dos slices
+dim(die) <- c(1, 2, 3)
+print(die)
+```
+
+## Matrices
+
+**Matrizes** e R são estruturas de dados que armazenam 
+
+Matrizes armazenam valores em um arranjo **bidimensional**. 
+
+É possível utilizar um vetor atômico para construção de uma matriz. Para isso, define-se o número de linhas. No mesmo sentido, é possível observar que a distribuição dos dados na matriz se dá por coluna. Assim, se temos um dado de seis faces e definimos nossa matriz com 2 linhas, a primeira coluna receberá na linha 1 o número 1, na linha dois o número dois. Na segundo coluna encontraremos na linha 1 o número 3 e na linha 2 o número 4, e assim sucessivamente.   
+
+Para modificar este arranjo, basta utilizar a função `matrix` adicionando como argumento do parâmetro `byrow` o valor `TRUE'. Isso garantirá que a distribuição dos dados na matriz será iniciada na linha.   
+
+```{r}
+m <- matrix(die, nrow = 2); print(m)
+m2 <- matrix(die, nrow = 3); print(m2)
+# Matriz com argumento TRUE para parametro byrow
+m3 <- matrix(die, nrow = 2, byrow = TRUE); print(m3)
+m4 <- matrix(die, nrow = 3, byrow = TRUE); print(m4)
+
+```
+
+## Arrays
+
+**_Arrays_** (arranjos) em R são semelhantes às matrizes, porém, eles guardam arranjos **_n-dimensionais_** de dados.  
+Desta forma, um array pode conter mais de duas dimensões. 
+Para criar um array é preciso indicar um vetor atômico para entrada de dados. A sua funcionalidade é basicamente a mesma do atributo `dim` que foi visto anteriormente. 
+
+Para criar um _array_ é preciso fornecer um vetor atômico como primeiro argumento, e um vetor de dimensões como segundo argumento. Este último é agora chamado de `dim`.  
+
+```{r}
+# Criando um array
+# ar será um array 2 x 2 x 3 (duas linhas, duas colunas, em três slices)
+ar <- array(c(11:14, 21:24, 31:34), dim = c(2, 2, 3)); print(ar)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
