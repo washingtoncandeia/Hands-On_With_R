@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1525961250306.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "543083778",
+    "id" : "9913B5C6",
+    "lastKnownWriteTime" : 1525976088,
+    "last_content_update" : 1525976088445,
+    "path" : "~/git/Hands-On_With_R/cap3.Rmd",
+    "project_path" : "cap3.Rmd",
+    "properties" : {
+        "cursorPosition" : "429,0",
+        "last_setup_crc32" : "CEBF27B4bb338d19",
+        "scrollLine" : "385"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

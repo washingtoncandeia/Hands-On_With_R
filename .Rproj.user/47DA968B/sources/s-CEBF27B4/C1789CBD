@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1525958347411.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1694071900",
+    "id" : "C1789CBD",
+    "lastKnownWriteTime" : 1525976132,
+    "last_content_update" : 1525976132089,
+    "path" : "~/git/Hands-On_With_R/cap3.R",
+    "project_path" : "cap3.R",
+    "properties" : {
+        "cursorPosition" : "108,0",
+        "scrollLine" : "56"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
