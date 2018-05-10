@@ -25,8 +25,7 @@ int <- c(1L, 5L)
 # Criando um vetor de caracteres
 text <- c("espadas", "copas")
 
-print(int)
-print(text)
+print(int); print(text)
 
 # Descobrir o tipo de um dado
 typeof(die)

@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "1694071900",
+    "hash" : "2450000886",
     "id" : "C1789CBD",
-    "lastKnownWriteTime" : 1525976132,
-    "last_content_update" : 1525976132089,
+    "lastKnownWriteTime" : 1525977172,
+    "last_content_update" : 1525977172513,
     "path" : "~/git/Hands-On_With_R/cap3.R",
     "project_path" : "cap3.R",
     "properties" : {
-        "cursorPosition" : "108,0",
-        "scrollLine" : "56"
+        "cursorPosition" : "64,17",
+        "scrollLine" : "65"
     },
     "relative_order" : 1,
     "source_on_save" : false,
