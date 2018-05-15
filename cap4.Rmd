@@ -1,0 +1,373 @@
+---
+title: "cap4"
+author: "Washington Candeia"
+date: "May 15, 2018"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Capítulo 4 - Notação R
+
+Agoa que você tem um baralho de cartas, é preciso uma forma de fazer coisas com isso, do tipo que se faz com cartas em um baralho.  
+Primeiro, você vai querer reembaralhar as cartas de tempos em tempos. Depois, você irá querer jogar as cartas do baralho (uma carta por vez).  
+
+Para fazer estas coisas, você precisará trabalhar com valores individuais dentro de seu _data frame_, uma tarefa essencial em _data science_.  Por exemplo, para jogar as cartas do topo de seu baralho, você precisará escrever uma função que seleciona a primeira linha de valores em seu _data frame_, como abaixo:  
+
+
+```{r}
+# Load data
+deck <- read.csv("./deck.csv", stringsAsFactors = FALSE)
+
+# Transformando em data frame
+df <- data.frame(deck, stringsAsFactors = FALSE)
+
+# Salvar arquivo
+write.csv(deck, file = "cards2.csv", row.names = FALSE)
+
+# Observando o conteúdo do data frame com função str
+str(df)
+df
+
+#Atributos
+attributes(df)
+unclass(df)
+```
+
+Na página 57 do livro, é possível encontrar o endereço para baixar o arquivo _**deck**_ [http://bit.ly/deck_CSV].     
+
+
+Para extrair valores de um data frame, escreva o nome do data frame seguido de colchetes: 
+
+```{r}
+# Slice
+df[,]      # Todas as linhas e todas as colunas
+df[1,]     # Linha 1, valores de todas as colunas
+df[, 1]    # Somente coluna 1
+df[,2]     # Somente coluna 3
+df[14,2]   # Linha 14 coluna 2
+df[1:3, 2] # Da linha 1 à 3, da coluna 2
+```
+
+São os **índices** (_indexes_) que dizem a R aonde ir, o que buscar, que valores retornar.  
+
+> nome_objeto_data[linha, coluna]   
+
+Além disso, há diferentes formas de criar índices em R:   
+
+
+> Inteiros positivos
+> Inteiros negativos  
+> Zero  
+> Espaços em branco  
+> Valores lógicos  
+> Nomes  
+
+## Inteiros Positivos  
+
+```{r}
+# Usando diferentes formas de buscar valores por índices
+deck[14,2]           # Linha 14 coluna 2
+
+deck[1, 2]           # Linha 1 coluna 2
+
+# Com vetores
+deck[1, c(1, 2, 3)]  # Linha 1, colunas 1, 2 e 3
+
+deck[2, c(1, 3)]     # Linha 2, colunas 1 e 3
+```
+
+Obs.: https://rmarkdown.rstudio.com/pdf_document_format.html
+
+```{r}
+# drop = FALSE  
+deck[1:2, 1:2]    # Retorna um data frame
+deck[1:2, 1]      # Retorna um vetor
+deck[1:2, 2]      # Retorna um vetor
+deck[1:2, 3]      # Retorna um vetor
+
+# Para retornar um vetor, mesmo quando se coloca uma simples coluna
+# utiliza-se o argumento drop = FALSE
+deck[1:2, 1, drop = FALSE]  # Retorna um data frame
+deck[1:2, 1]                # Retorna um vetor
+deck[1:6, 2, drop = FALSE]  # Retorna um data frame
+```
+
+
+## Inteiros negativos
+
+Fazem o oposto dos inteiros positivos. Quando se coloca um inteiro negativo em um slice ou index, o interpretador R excluirá estes últimos itens apontados. Ou seja, R retornará todos os elementos, exceto, os elementos apontados no índices negativos.   
+
+```{r}
+deck[-1, 1:3]         # Exceto a linha 1, todas as linhas restantes e colunas
+deck[-(2:52), 1:3]    # A linha 1 exceptuando-se as outras, e todas as colunas
+```
+
+## Zero
+
+Usar um zero como índice cria um objeto vazio.  
+
+## Espaços em Branco
+
+Espaços em branco são usados para especificar que se pode utilizar **todos** os indices daquela posição.  
+Isto significa todas as linhas ou todas as colunas.  
+
+```{r}
+deck[ , 3]   # Todas as linhas, itens da coluna 3
+deck[52, ]   # Apenas a linha 52, todas as colunas
+deck[ , 2]   # Todos as linhas da coluna 2
+```
+
+## Valores Lógicos  
+
+Se um vetor contiver valores lógicos, TRUE ou FALSE, como índice, R atribuirá cada um destes a uma linha do data frame (ou da coluna, dependendo de que index se usa). Assim, R retornará cada linha correspondente a TRUE e deixará de lado quaisquer outras que tenham FALSE como correspondência.  
+
+```{r}
+deck[1, c(1, 2, 3)]            # Com inteiros
+deck[1, c(TRUE, TRUE, FALSE)]  # Com lógicos
+```
+
+## Nomes 
+
+Também é possível obter as entradas ou valores do data frame utilizando nomes, como _strings_ de caracteres.  
+
+```{r}
+deck[1, c("face", "suit", "value")]
+
+# O mesmo que 
+deck[1, c(1, 2, 3)]            # Linha 1, todas as três colunas
+deck[1, c(TRUE, TRUE, TRUE)]   # Linha 1, todas as três colunas
+deck[1, 1:3]                   # Linha 1, todas as três colunas
+
+# Apenas um deles
+deck[ , "value"]               # Todas as entradas (linhas) na coluna value (3)
+deck[ , "suit"]                # Todas as entradas (linhas) na coluna suit(2)
+```
+
+# Retire uma Carta (Deal a Card)
+
+Exercício da página 70 - 71
+
+## Exercício
+**Complete o seguinte código para fazer uma função que retorna a primeira linha de um data frame:**  
+
+```{r}
+# função para completar:
+deal <- function(cards){
+  #?
+}
+
+# Complete:
+deal <- function(cards){
+  first_card  <- cards[1, ]
+  print(first_card)
+}
+
+# Usando a função
+deal(deck)
+```
+
+
+Porém, toda vez que usarmos a função `deal` ela sempre trará o rei de espadas, com valor 13. É preciso embaralhar (_shuffling_) estas cartas.   
+
+# Embaralhe o Baralho (Shuffle the Deck)
+
+Para embaralhar é preciso rearranjar de forma aleatória as cartas em um baralho.  
+Neste nosso cojunto de dados, cada carta é **uma linha** no _data frame_, e cada coluna trás uma informação desta carta. Para embaralhá-las a solução é reordenar as **linhas** deste _data frame_ de forma aleatória.
+
+Lembrando:  
+
+Usando argumento `replace` na função `sample` é uma forma de conseguir utilizá-la para obter duas amostras independentes. Assim, é como se jogássemos o dado duas ou mais vezes (lembrando de especificar como argumento em `size` nesta função). 
+
+```{r}
+# Função sample
+dado <- c(1, 2, 3, 4, 5, 6)
+sample(dado, size = 2, replace = TRUE)
+```
+
+Usar a função `sample` evita ter que embaralhar carta por carta salvando em diferentes variáveis, conforme o livro exemplifica. 
+
+```{r}
+# Veja que é possível randomizar qualquer valor 
+# Você poderia criar as variáveis:
+deck2 <- deck[1:52, ]   # 52 cartas (linhas), todas as colunas (informações das cartas)
+deck2
+
+
+# Escolhendo a segunda carta (linha), depois a primeira, por fim as útlimas 52
+# E todas as colunas
+deck3 <- deck[c(2, 1, 3:52), ]
+deck3
+```
+
+Logo, é possível aleatorizar os valores das cartas - linhas - passando a variável `random` que contém todas as 52 cartas, como índice de `deck`. Assim, cada valor que estiver aleatorizado em `random`  será uma pisição no índice de `deck`.  
+
+
+```{r}
+# Criando uma variável random para armazenar cartas 
+random <- sample(1:52, size = 52)   # Das cartas 1 a 52, tamanho 52, pois são 52 amostras por vez
+
+# Aleatorizando
+deck4 <- deck[random, ]    # Os valores de random são passados como indices de linhas
+deck4
+```
+
+## Exercício, p.73  
+**Use as ideias anteriores para escrever uma função _shuffle_. Ela deve pegar um data frame e retornar uma cópia embaralhada deste data frame.**   
+
+```{r}
+# Função embaralhar
+# Para isso, usar sample
+# Embaralhar 52 cartas, 52 como tamanho independente
+# cards é o input da função, o argumento para o data frame colocado
+# random contém os valores embaralhados de indices
+# Cada indice é uma linha, então, mantem-se todas as colunas
+shuffle <- function(cartas){
+  random <- sample(1:52, size = 52)
+  cartas[random, ]
+}
+
+shuffle(deck)
+```
+
+Então, se fosse simular um jogo de cartas já temos duas coisas:  
+
+**1. A função `deal` para escolher a carta que está em cima do monte de baralhos;**   
+**2. A função `shuffle` para embaralhar antes que formos retirar uma carta com `deal`;**  
+
+```{r}
+# Retire uma carta
+deal(deck)
+
+# Embaralhe
+deck5 <- shuffle(deck)
+
+# Retire outra carta
+deal(deck5)
+```
+
+## Dollar Signs ($) e Colchetes Duplos ([[]])  
+
+Dois objetos em R aceitam um segundo sistema de notação. Pode-se extrari valores de _data frames_ e listas utilizando a sintaxe **$**.  
+
+
+### Dollar Signs $
+
+Por exemplo, para selecionar uma coluna em um data frame é só usar o nome do data.frame**$**coluna.  
+```{r}
+# Notação com uso de index
+deck[, "value"]   # Ultima coluna
+deck[ , 3]        # Ultima coluna
+
+# Notação com sinal de dólar
+deck$value        # Ultima coluna
+deck$suit         # Segunda coluna
+deck$face         # Primeira coluna
+```
+
+Pode-se usar a notação de $ em **listas** também. Cada subconjunto da lista será outra lista.  
+
+
+```{r}
+# Criando um lista 
+lst <- list(numbers = c(1, 2), 
+            logical = TRUE, 
+            strings = c("a", "b", "c"))
+
+## Os três elmentos da lista são numbers, logical, strings
+print(lst)
+
+# Cada valor será retornado como uma lista
+
+# Porém, usando notação $, os valores retornados são valores puros, sem ser na estrutura de lista
+lst$numbers
+
+
+# Eles podem até ser usados
+mean(lst$numbers)
+sum(lst$numbers)
+```
+
+### Colchetes duplos (**[[ ]]**)
+Se os elmentos da lista não tiverem nomes, pode-se usar a notação de colchetes duplos. Eles equivalem ao uso do $.  
+
+```{r}
+# Notação de colchetes duplo para primeiro elmento da lista
+lst[[1]]          # Liberam os valores dentro desse subconjunto da lista 
+lst$numbers       # A mesma coisa
+
+# Usar colchetes duplos é diferente de um só
+lst[1]            # Devolve um subconjunto da lista
+lst["numbers"]    # O mesmo que o uso acima
+
+# Usando duplo colchetes
+lst[[1]]          # Valor puro
+lst[["numbers"]]  # Valor puro
+lst$numbers       # Valor puro
+
+
+# Diferente
+lst[1]            # Subconjunto
+lst["numbers"]    # Subconjunto
+```
+
+
+Cada lista é um trem que carrega em seus vagões os valores puros.   
+Cada vagão é, desta forma, um elemento da lista (numbers, logical, strings do nosso exemplo).  
+
+> Usar colchetes simples seleciona o vagão.  
+> Usar colchetes duplos seleciona o conteúdo do vagão. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

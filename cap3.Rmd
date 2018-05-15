@@ -2,7 +2,10 @@
 title: "cap.3 - R Objects"
 author: "Washington Candeia de Araujo"
 date: "Maio, 10 2018"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -85,7 +88,7 @@ R não salvará um número como um inteiro (_integer_) a não ser que especifiqu
 > A diferença entre um _double_ e um _integer_ é como R salvará cada um deles na memória do computador.
 Inteiros são definidos mais precisamente na memória do computador do que _doubles_.  
 
-# Characters 
+## Characters 
 
 Caracteres são bem fáceis de identificar. Eles precisam estar sob aspas e seu tipo é igualmente fácil de identificar.  
 
@@ -97,7 +100,7 @@ print(text)
 typeof(text)
 ```
 
-# Logical
+## Logical
 
 Lógicos estão conforme a lógica matemática, onde os **_booleanos_** são utilizados para estas manipulações.   
 
@@ -254,7 +257,7 @@ unclass(dico)
 
 **Fatores** tornam uma tarefa fácil colocar variáveis categóricas em modelos estatísticos devido às variáveis serem codificadas como números. Porém, a complicação de fatores é que estes confundem por se assemelharem a caracteres (_strings_), mas se comportarem como inteiros.  
 
-**R tentará converter _strings_ de caracteres a fatores quando os dados forem abertos ou criados no ambiente do interpretador. No geral, a experiência será melhor se não se permitir ao R fazer fatores até que se peça ao mesmo que seja feito. 
+**R tentará converter _strings_ de caracteres a fatores quando os dados forem abertos ou criados no ambiente do interpretador. No geral, a experiência será melhor se não se permitir ao R fazer fatores até que se peça ao mesmo que seja feito.** 
 
 Assim como outros tipos em R, pode-se transformar fatores em _strings_ de caracteres com a função `as.character`.  
 ```{r}
@@ -371,6 +374,8 @@ Para criar um data.frame há a função `data.frame`.
 df <- data.frame(face = c("ace", "two", "six"), 
                  suit = c("clubs" ,"clubs", "clubs" ), 
                  value = c(1, 2, 3))
+
+str(df)
 ```
 
 É possível observar no **painel de ambiente, história, connection, e git** do Rstudio que o ojbeto `df` criado (um data.frame) possui três tipos de objetos agrupados: **face, suit** e **value**. 
@@ -389,7 +394,7 @@ print(df)
 
 Observe que todos os caracteres no data.frame (argumentos `face` e `suit`, respectivamente) foram, por coerção, passados ao tipo character.  
 
-É possível evitar que ocorra coerção e os tipos sejam modificados em um data.frame R. Para isso, basta utilizar um argumento `stringsAsfactors` como `FALSE`. 
+**É possível evitar que ocorra coerção e os tipos sejam modificados em um data.frame R. Para isso, basta utilizar um argumento `stringsAsfactors` como `FALSE`.** 
 
 ```{r}
 # Exemplo de data frame sem coerção de tipos
@@ -412,7 +417,7 @@ Note que agora, os objetos face e suit estão como _chr_ de characters. Não sã
 CSV - Arquivos de texto simples onde os dados estão separados por vírgulas. 
 
 ```{r}
-head(deck)
+#head(deck)
 ```
 
 ## Salvando Dados
@@ -421,7 +426,7 @@ Salvar uma cópia do arquivo CSV. Usar a função `write.csv`.
 
 ```{r}
 # Salvar uma cópia
-write.csv(deck, file = "cards.csv", row.names = FALSE)
+#write.csv(deck, file = "cards.csv", row.names = FALSE)
 ```
 
 Por que usar o argumento `row.names = FALSE`?  

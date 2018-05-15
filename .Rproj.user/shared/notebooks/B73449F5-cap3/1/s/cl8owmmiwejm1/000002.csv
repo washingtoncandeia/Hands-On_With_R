@@ -1,2 +1,0 @@
-"0","# Salvar uma cópia"
-"0","write.csv(deck, file = ""cards.csv"", row.names = FALSE)"

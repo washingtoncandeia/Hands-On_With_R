@@ -1,107 +1,53 @@
-##--------------------------------
-# Hands-On Programmin With R
-# Garret Grolemund 
-# O'Reilly Media Inc.
-# Cap.3 - R Objects
-##--------------------------------
+## Cap.2 - Packages
 
-# Iniciando no Projeto 2: Playing Cards
-# A deck of playing cards (as cartas de um baralho)
-# Which cards have been dealt
-# (Quais as cartas foram distribuídas)
-# Cap.3 - Construir um baralho de cartas
+library("ggplot2")
 
-# Nosso dado é um vetor simples
-die <- c(1, 2, 3, 4, 5, 6)
-is.vector(die)
+qplot
 
-# Um único valor também é um vetor 
-five <- 5
-is.vector(five)
+# Let's make it for a spin = vamos dar uma volta
+# qplot -> quick plots
 
-# Criando um vetor de inteiros
-int <- c(1L, 5L)
+x <- c(-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1)
+x
 
-# Criando um vetor de caracteres
-text <- c("espadas", "copas")
+y <- x^3
+y
 
-print(int); print(text)
+# qplot
+qplot(x, y)
 
-# Descobrir o tipo de um dado
-typeof(die)
+x2 <- c(1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4)
+qplot(x2, binwidth = 1)
 
-# Especificando inteiros em um vetor
-int2 <- c(-1L, -60L, 88L, 5L, 6L)
+x3 <- c(0, 1, 1, 2, 2, 2, 3, 3, 4)
+qplot(x3, binwidth = 1)
 
-print(int2)
+# Criando a funçao para lançar os dois dados
+roll <- function(bones = 1:6){
+  dice <- sample(bones, size = 2, replace = T)
+  sum(dice)
+}
 
+# Replicate prove uma forma de repetir um comando R multiplas vezes
+# 1 - Primeiro argumento é o número de vezes que se quer repetir o comando
 
-# Vamos atribuir a objetos R, nomes
-# Esse é o atributo name em R
-dados <- c(1, 2, 3, 4, 5, 6)
-names(dados) <- c('um', 'dois', 'tres', 'quatro', 'cinco', 'seis')
+# Exemplo: repetir três vezes a soma 1 + 1
+replicate(3, 1 + 1)
 
-# Observando os atributos
-attributes(dados)
-print(dados)
+# Repetir o uso de nossa função roll 10x
+replicate(10, roll())
 
-# Somar
-dados + 1
+# roll 1000x
+rolls <- replicate(10000, roll())
+qplot(rolls, binwidth = 1)
+help(sample)
 
-# Para encerrar atributos basta atribuir NULL a este objeto R
-names(dados) <- NULL
-attributes(dados)
+# Criar lançamentos enviesados
+roll2 <- function(bones = 1:6){
+  dados <- sample(bones, size = 2, replace = T, prob = c(1/8, 1/8, 1/8, 1/8, 1/8, 3/8))
+  sum(dados)
+}
 
-# Exemplo
-eu <- c('Biologo', '34', 'Bioquímica', 'UFRN')
-names(eu) <- c('Profissão', 'Idade', 'Área', 'Instituição')
-print(eu)
-
-# Matrices
-m <- matrix(die, nrow = 2)
-print(m)
-
-# Matrizes em R possuem seus dados organizados em colunas
-# É possível designar essa organização por linhas
-# Para isso, usa-se a função adequada
-m2 <- matrix(die, nrow = 2, byrow = TRUE)
-print(m2)
-
-m3 <- matrix(die, nrow = 3, byrow = TRUE); print(m3)
-
-# Arrays
-# Arrays são arranjos multidimensionais (n-dimensionais)
-# Criando um array
-# ar será um array 2 x 2 x 3 (duas linhas, duas colunas, em três slices)
-ar <- array(c(11:14, 21:24, 31:34), dim = c(2, 2, 3)); print(ar)
-
-# Exercício p.47
-cartas <- c('ace', 'king', 'queen', 'jack', 'ten', replicate(5, 'spades')); print(cartas)
-cartas_matrix <- matrix(cartas, nrow = 5); print(cartas_matrix)
-
-# Factors
-gender <- factor(c('feminino', 'masculino', 'feminino', 'feminino', 'feminino', 'feminino'))
-typeof(gender)
-class(gender)
-attributes(gender)
-# Como R armazena o factor
-unclass(gender)
-
-# Quando se tem factors envolvidos na tabela, matriz, data.frame
-# observar como estes estão armazenados (1 ou 2 ?) usando unclass
-flor <- factor(c('pétalas', 'sépalas', 'tronco', 'frutos', 'inflorescencia'))
-attributes(flor)
-class(flor)
-unclass(flor)
-
-## Exercício, p.51
-# Faça uma jogada de cartas virtuais por combinar
-# 'as', 'kopas' e 1 em um vetor
-# Que tipo de vetor atômico surgirá?  
-cards <- c('as', 'kopas', 1)
-typeof(cards); attributes(cards); class(cards); unclass(cards)
-
-# Uma vez que o interpretador R não suporta vetores atômicos com mais de um tipo de dado
-# R, por coerção, transformará todos os tipos de dados dentro do vetor cards 
-# em tipo character, classe character. 
-unclass(cards)
+# teste
+rolls <- replicate(10000, roll2())
+qplot(rolls, binwidth = 1)

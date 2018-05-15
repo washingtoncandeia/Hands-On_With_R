@@ -1,6 +1,0 @@
-"0","# Usando argumentos nomeados para criar dados em data.frame"
-"0","# O nome do argumento será o nome da coluna. "
-"0","# O que está contido no argumento nomeado fará parte das colunas"
-"0","df <- data.frame(face = c(""ace"", ""two"", ""six""), "
-"0","                 suit = c(""clubs"" ,""clubs"", ""clubs"" ), "
-"0","                 value = c(1, 2, 3))"
