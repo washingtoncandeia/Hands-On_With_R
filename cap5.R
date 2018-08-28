@@ -87,19 +87,37 @@ head(deck3, 13)
 ## Cada carta tem valor zero.
 deck4 <- deck
 deck4$value <- 0
+head(deck4, 13)
 deck4$value
+
+sum(deck4$face == 'ace')
+deck3$face == 'ace'
+sum(deck3$face == 'ace')
 
 ## Exercício , p.84
 # Atribuir o valor 1 a cada carta de copas.
 deck4$suit
+deck4$suit == 'hearts'
+deck4$value[deck4$suit == 'hearts']
+
+# Achar todos os valores nas variáveis.
+# Achar todas as cartas de copas:
+deck4[deck4$suit == 'hearts', ]
+# Achar todas as cartas de espadas:
+deck4[deck4$suit == 'spades', ]
+# Achar todas as cartas de paus:
+deck4[deck4$suit == 'clubs', ]
+# Achar todas as cartas de ouro:
+deck4[deck4$suit == 'diamonds', ]
+
+# Achar as cartas de ases:
+deck4[deck4$face == 'ace', ]
+
+# Atribuir um novo valor (coluna $value) as cartas de copas (coluna $suit):
 deck4$value[deck4$suit == 'hearts'] <- 1
 deck4
 
 # Atribuir 13 a carta Rainha de Espadas.
-deck4$face == 'queen'
-deck4[deck4$face == 'queen', ]
-deck4[deck4$suit == 'spades', ]
-
 ### Boolean operator
 # Usar um operdor booleano para encontrar uma Rainha de Espadas.
 deck4$face == 'queen' & deck4$suit == 'spades'
@@ -112,6 +130,10 @@ deck4$value[queenOfspades]
 deck4$value[queenOfspades]
 deck4$value[queenOfspades] <- 13
 deck4$value[queenOfspades]
+deck4[deck4$face == 'queen', ]
+# Utilizando Logical subsetting e Boolean operators:
+deck4[deck4$face == 'queen' & deck4$suit == 'spades', ]
+
 
 ## Exercício, p.87
 w <- c(-1, 0, 1)
